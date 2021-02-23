@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import loadingVue from './loading.vue';
-import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom';
-import { PopupManager } from 'element-ui/src/utils/popup';
-import afterLeave from 'element-ui/src/utils/after-leave';
-import merge from 'element-ui/src/utils/merge';
+import { addClass, removeClass, getStyle } from 'ttelem/src/utils/dom';
+import { PopupManager } from 'ttelem/src/utils/popup';
+import afterLeave from 'ttelem/src/utils/after-leave';
+import merge from 'ttelem/src/utils/merge';
 
 const LoadingConstructor = Vue.extend(loadingVue);
 

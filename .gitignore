@@ -10,12 +10,12 @@ yarn-error.log.*
 lerna-debug.log.*
 .idea
 .vscode
-examples/element-ui
+examples/ttelem
 examples/pages/en-US
 examples/pages/zh-CN
 examples/pages/es
 examples/pages/fr-FR
-fe.element/element-ui
+fe.element/ttelem
 .npmrc
 coverage
 waiter.config.js

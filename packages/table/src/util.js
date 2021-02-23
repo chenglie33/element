@@ -1,4 +1,4 @@
-import { getValueByPath } from 'element-ui/src/utils/util';
+import { getValueByPath } from 'ttelem/src/utils/util';
 
 export const getCell = function(event) {
   let cell = event.target;

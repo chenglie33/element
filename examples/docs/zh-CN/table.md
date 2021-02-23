@@ -1500,6 +1500,7 @@
 <template>
   <el-table
     :data="tableData"
+    :show-summary-position-top='true'
     border
     show-summary
     style="width: 100%">
@@ -1876,6 +1877,7 @@
 | default-sort | 默认的排序列的 prop 和顺序。它的`prop`属性指定默认的排序的列，`order`指定默认排序的顺序| Object | `order`: ascending, descending | 如果只指定了`prop`, 没有指定`order`, 则默认顺序是ascending |
 | tooltip-effect | tooltip `effect` 属性 | String | dark/light | | dark |
 | show-summary | 是否在表尾显示合计行 | Boolean | — | false |
+| show-summary-position-top | 合计是否展示在头部 | Boolean | - | false |
 | sum-text | 合计行第一列的文本 | String | — | 合计 |
 | summary-method | 自定义的合计计算方法 | Function({ columns, data }) | — | — |
 | span-method | 合并行或列的计算方法 | Function({ row, column, rowIndex, columnIndex }) | — | — |

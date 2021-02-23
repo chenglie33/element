@@ -30,6 +30,23 @@
       </table-header>
     </div>
     <div
+      v-if="showSummary&&showSummaryPositionTop"
+      v-show="data && data.length > 0"
+      v-mousewheel="handleHeaderFooterMousewheel"
+      class="el-table__footer-wrapper"
+      ref="footerWrapper">
+      <table-footer
+        :store="store"
+        :border="border"
+        :sum-text="sumText || t('el.table.sumText')"
+        :summary-method="summaryMethod"
+        :default-sort="defaultSort"
+        :style="{
+          width: layout.bodyWidth ? layout.bodyWidth + 'px' : ''
+        }">
+      </table-footer>
+    </div>
+    <div
       class="el-table__body-wrapper"
       ref="bodyWrapper"
       :class="[layout.scrollX ? `is-scrolling-${scrollPosition}` : 'is-scrolling-none']"
@@ -62,7 +79,7 @@
       </div>
     </div>
     <div
-      v-if="showSummary"
+      v-if="showSummary&&!showSummaryPositionTop"
       v-show="data && data.length > 0"
       v-mousewheel="handleHeaderFooterMousewheel"
       class="el-table__footer-wrapper"
@@ -101,6 +118,21 @@
           }"></table-header>
       </div>
       <div
+        v-if="showSummary&&showSummaryPositionTop"
+        v-show="data && data.length > 0"
+        class="el-table__fixed-footer-wrapper"
+        ref="fixedFooterWrapper">
+        <table-footer
+          fixed="left"
+          :border="border"
+          :sum-text="sumText || t('el.table.sumText')"
+          :summary-method="summaryMethod"
+          :store="store"
+          :style="{
+            width: bodyWidth
+          }"></table-footer>
+      </div>
+      <div
         class="el-table__fixed-body-wrapper"
         ref="fixedBodyWrapper"
         :style="[{
@@ -124,7 +156,7 @@
           :style="{ height: layout.appendHeight + 'px'}"></div>
       </div>
       <div
-        v-if="showSummary"
+        v-if="showSummary&&!showSummaryPositionTop"
         v-show="data && data.length > 0"
         class="el-table__fixed-footer-wrapper"
         ref="fixedFooterWrapper">
@@ -162,6 +194,21 @@
           }"></table-header>
       </div>
       <div
+        v-if="showSummary&&showSummaryPositionTop"
+        v-show="data && data.length > 0"
+        class="el-table__fixed-footer-wrapper"
+        ref="rightFixedFooterWrapper">
+        <table-footer
+          fixed="right"
+          :border="border"
+          :sum-text="sumText || t('el.table.sumText')"
+          :summary-method="summaryMethod"
+          :store="store"
+          :style="{
+            width: bodyWidth
+          }"></table-footer>
+      </div>
+      <div
         class="el-table__fixed-body-wrapper"
         ref="rightFixedBodyWrapper"
         :style="[{
@@ -185,7 +232,7 @@
           :style="{ height: layout.appendHeight + 'px' }"></div>
       </div>
       <div
-        v-if="showSummary"
+        v-if="showSummary&&!showSummaryPositionTop"
         v-show="data && data.length > 0"
         class="el-table__fixed-footer-wrapper"
         ref="rightFixedFooterWrapper">
@@ -213,12 +260,12 @@
 </template>
 
 <script type="text/babel">
-  import ElCheckbox from 'element-ui/packages/checkbox';
+  import ElCheckbox from 'ttelem/packages/checkbox';
   import { debounce, throttle } from 'throttle-debounce';
-  import { addResizeListener, removeResizeListener } from 'element-ui/src/utils/resize-event';
-  import Mousewheel from 'element-ui/src/directives/mousewheel';
-  import Locale from 'element-ui/src/mixins/locale';
-  import Migrating from 'element-ui/src/mixins/migrating';
+  import { addResizeListener, removeResizeListener } from 'ttelem/src/utils/resize-event';
+  import Mousewheel from 'ttelem/src/directives/mousewheel';
+  import Locale from 'ttelem/src/mixins/locale';
+  import Migrating from 'ttelem/src/mixins/migrating';
   import { createStore, mapStates } from './store/helper';
   import TableLayout from './table-layout';
   import TableBody from './table-body';
@@ -270,7 +317,11 @@
         type: Boolean,
         default: true
       },
-
+      showSummaryPositionTop: {
+        type: Boolean,
+        default: false
+      },
+      
       showSummary: Boolean,
 
       sumText: String,

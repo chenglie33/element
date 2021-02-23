@@ -29,9 +29,9 @@
       ],
       "plugins": [
         ["module-resolver", {
-          "root": ["element-ui"],
+          "root": ["ttelem"],
           "alias": {
-            "element-ui/src": "element-ui/lib"
+            "ttelem/src": "ttelem/lib"
           }
         }]
       ]

@@ -1,9 +1,11 @@
 import LayoutObserver from './layout-observer';
 import { mapStates } from './store/helper';
-
+import ElCheckbox from 'ttelem/packages/checkbox';
 export default {
   name: 'ElTableFooter',
-
+  components: {
+    ElCheckbox
+  },
   mixins: [LayoutObserver],
 
   render(h) {
@@ -65,6 +67,7 @@ export default {
                 rowspan={ column.rowSpan }
                 class={ this.getRowClasses(column, cellIndex) }>
                 <div class={ ['cell', column.labelClassName] }>
+                  {/* <ElCheckbox/> */}
                   {
                     sums[cellIndex]
                   }
