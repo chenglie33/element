@@ -289,7 +289,11 @@
     directives: {
       Mousewheel
     },
-
+    provide() {
+      return {
+        provideSelect: this.showSummarySelectAll
+      };
+    },
     props: {
       data: {
         type: Array,
@@ -328,8 +332,13 @@
         default: false
       },
       showSummarySelectAll: {
-        type: Boolean,
-        default: false
+        type: Object,
+        default() {
+          return {
+            selectAll: true,
+            selectCurrent: true
+          };
+        }
       },
       showSummary: Boolean,
 
@@ -757,6 +766,15 @@
   bottom: initial;
   /deep/ td{
     border-top: none !important;
+  }
+}
+/deep/ .SelectAll{
+  position: absolute;
+  z-index: 1;
+  padding-top:15px;
+  top:0px;
+  .selectAllSpan{
+    float: right;
   }
 }
 </style>

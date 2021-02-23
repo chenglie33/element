@@ -3,6 +3,7 @@ import { mapStates } from './store/helper';
 import ElCheckbox from 'ttelem/packages/checkbox';
 export default {
   name: 'ElTableFooter',
+  inject: ['provideSelect'],
   components: {
     ElCheckbox
   },
@@ -67,9 +68,8 @@ export default {
                 rowspan={ column.rowSpan }
                 class={ this.getRowClasses(column, cellIndex) }>
                 <div class={ ['cell', column.labelClassName] }>
-                  {/* <ElCheckbox/> */}
                   {
-                    sums[cellIndex]
+                    this.checkBoxFun(cellIndex, sums)
                   }
                 </div>
               </td>)
@@ -123,6 +123,36 @@ export default {
   },
 
   methods: {
+    toggleAllSelection(event) {
+      event.stopPropagation();
+      this.store.commit('toggleAllSelection');
+    },
+    toggleFullAllSelection(value) {
+      // this.$emit('', value);
+      this.store.commit('toggleAllSelection');
+    },
+    checkBoxFun(cellIndex, sums) {
+      let store = this.store;
+      if (this.provideSelect.selectAll && this.provideSelect.selectCurrent && cellIndex === 0) {
+        return <div class='SelectAll'><el-checkbox disabled={ store.states.data && store.states.data.length === 0 }
+          indeterminate={ store.states.selection.length > 0 && !this.isAllSelected }
+          nativeOn-click={ this.toggleAllSelection }
+          value={ this.isAllSelected } >Select current</el-checkbox><el-checkbox disabled={ store.states.data && store.states.data.length === 0 }
+          onChange={ this.toggleFullAllSelection }
+        >Select All</el-checkbox><span class='selectAllSpan'>{sums[cellIndex]}</span></div>;
+      } else if (this.provideSelect.selectCurrent && cellIndex === 0) {
+        return <div class='SelectAll'><el-checkbox disabled={ store.states.data && store.states.data.length === 0 }
+          indeterminate={ store.states.selection.length > 0 && !this.isAllSelected }
+          nativeOn-click={ this.toggleAllSelection }
+          value={ this.isAllSelected } >Select current</el-checkbox><span class='selectAllSpan'>{sums[cellIndex]}</span></div>;
+      } else if (this.provideSelect.selectAll && cellIndex === 0) {
+        return <div class='SelectAll'><el-checkbox disabled={ store.states.data && store.states.data.length === 0 }
+          onChange={ this.toggleFullAllSelection }
+        >Select All</el-checkbox><span class='selectAllSpan'>{sums[cellIndex]}</span></div>;
+      } else {
+        return sums[cellIndex];
+      }
+    },
     isCellHidden(index, columns, column) {
       if (this.fixed === true || this.fixed === 'left') {
         return index >= this.leftFixedLeafCount;
