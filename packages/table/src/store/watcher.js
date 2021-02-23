@@ -53,6 +53,8 @@ export default Vue.extend({
 
         // 选择
         isAllSelected: false,
+        // 选择全部包括下一页
+        isFullSelected: false,
         selection: [],
         reserveSelection: false,
         selectOnIndeterminate: false,

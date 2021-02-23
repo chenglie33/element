@@ -335,8 +335,8 @@
         type: Object,
         default() {
           return {
-            selectAll: true,
-            selectCurrent: true
+            selectAll: false,
+            selectCurrent: false
           };
         }
       },
