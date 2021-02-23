@@ -120,7 +120,10 @@
       <div
         v-if="showSummary&&showSummaryPositionTop"
         v-show="data && data.length > 0"
-        class="el-table__fixed-footer-wrapper"
+        class="el-table__fixed-footer-wrapper topHeight"
+        :style="[{
+          top: layout.headerHeight + 'px'
+        }]"
         ref="fixedFooterWrapper">
         <table-footer
           fixed="left"
@@ -136,7 +139,7 @@
         class="el-table__fixed-body-wrapper"
         ref="fixedBodyWrapper"
         :style="[{
-          top: layout.headerHeight + 'px'
+          top: layout.headerHeight + (showSummary&&showSummaryPositionTop&&this.$refs.fixedFooterWrapper? this.$refs.fixedFooterWrapper.offsetHeight:0) + 'px'
         },
         fixedBodyHeight]">
         <table-body
@@ -196,7 +199,10 @@
       <div
         v-if="showSummary&&showSummaryPositionTop"
         v-show="data && data.length > 0"
-        class="el-table__fixed-footer-wrapper"
+        class="el-table__fixed-footer-wrapper topHeight"
+        :style="[{
+          top: layout.headerHeight + 'px'
+        }]"
         ref="rightFixedFooterWrapper">
         <table-footer
           fixed="right"
@@ -212,7 +218,7 @@
         class="el-table__fixed-body-wrapper"
         ref="rightFixedBodyWrapper"
         :style="[{
-          top: layout.headerHeight + 'px'
+          top: layout.headerHeight + (showSummary&&showSummaryPositionTop&&this.$refs.rightFixedFooterWrapper? this.$refs.rightFixedFooterWrapper.offsetHeight:0) + 'px'
         },
         fixedBodyHeight]">
         <table-body
@@ -321,7 +327,10 @@
         type: Boolean,
         default: false
       },
-      
+      showSummarySelectAll: {
+        type: Boolean,
+        default: false
+      },
       showSummary: Boolean,
 
       sumText: String,
@@ -743,3 +752,11 @@
     }
   };
 </script>
+<style lang="scss" scoped>
+.topHeight{
+  bottom: initial;
+  /deep/ td{
+    border-top: none !important;
+  }
+}
+</style>
