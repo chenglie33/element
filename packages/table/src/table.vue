@@ -761,20 +761,4 @@
     }
   };
 </script>
-<style lang="scss" scoped>
-.topHeight{
-  bottom: initial;
-  /deep/ td{
-    border-top: none !important;
-  }
-}
-/deep/ .SelectAll{
-  position: absolute;
-  z-index: 1;
-  padding-top:15px;
-  top:0px;
-  .selectAllSpan{
-    float: right;
-  }
-}
-</style>
+
