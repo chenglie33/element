@@ -101,7 +101,12 @@ export default {
       }
     }
   },
-
+  data() {
+    return {
+      selectFullAll: false,
+      selectAll: false
+    };
+  },
   computed: {
     table() {
       return this.$parent;
@@ -125,19 +130,30 @@ export default {
   methods: {
     toggleAllSelection(event) {
       event.stopPropagation();
+      this.selectFullAll = false;
       this.store.commit('toggleAllSelection');
     },
     toggleFullAllSelection(value) {
-      // this.$emit('', value);
-      this.store.commit('toggleAllSelection');
+      this.selectFullAll = value;
+      if (!value) this.store.commit('toggleAllSelectionEmitFalse');
+      else this.store.commit('toggleAllSelectionEmitTrue');
+      if (value) {
+        if (!this.isAllSelected) this.store.commit('toggleAllSelection');
+        setTimeout(()=>{
+          this.store.commit('toggleFullSelect');
+        }, 100);
+      } else {
+        this.store.commit('toggleAllSelection');
+      }
+
     },
     checkBoxFun(cellIndex, sums) {
       let store = this.store;
       if (this.provideSelect.selectAll && this.provideSelect.selectCurrent && cellIndex === 0) {
         return <div class='SelectAll'><el-checkbox disabled={ store.states.data && store.states.data.length === 0 }
-          indeterminate={ store.states.selection.length > 0 && !this.isAllSelected }
+          indeterminate={ store.states.selection.length > 0 && !this.isAllSelected && !this.selectFullAll}
           nativeOn-click={ this.toggleAllSelection }
-          value={ this.isAllSelected } >Select current</el-checkbox><el-checkbox disabled={ store.states.data && store.states.data.length === 0 }
+          value={ this.isAllSelected } >Select current</el-checkbox><el-checkbox value={this.selectFullAll} disabled={ store.states.data && store.states.data.length === 0 }
           onChange={ this.toggleFullAllSelection }
         >Select All</el-checkbox><span class='selectAllSpan'>{sums[cellIndex]}</span></div>;
       } else if (this.provideSelect.selectCurrent && cellIndex === 0) {

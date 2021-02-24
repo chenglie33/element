@@ -197,7 +197,16 @@ export default Vue.extend({
       }
       this.table.$emit('select-all', selection);
     },
-
+    toggleAllSelectionEmitFalse() {
+      this.table.$emit('select-all-full', false);
+    },
+    toggleAllSelectionEmitTrue() {
+      this.table.$emit('select-all-full', true);
+    },
+    toggleFullSelect() {
+      const states = this.states;
+      states.isAllSelected = false;
+    },
     updateSelectionByRowKey() {
       const states = this.states;
       const { selection, rowKey, data } = states;

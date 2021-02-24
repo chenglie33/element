@@ -1562,11 +1562,12 @@
 
   <el-table
     :data="tableData"
-    border
     height="200"
+    :showSummarySelectAll='{selectAll: true,selectCurrent: true}'
     :summary-method="getSummaries"
     show-summary
     :show-summary-position-top='true'
+    @select-all-full='selectfull'
     style="width: 500px; margin-top: 20px">
     <el-table-column
     fixed
@@ -1637,12 +1638,19 @@
       };
     },
     methods: {
+      selectfull(value) {
+        console.log(value)
+      },
       getSummaries(param) {
         const { columns, data } = param;
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
             sums[index] = '总价';
+            return;
+          }
+          if (index === 1) {
+            sums[index] = '';
             return;
           }
           const values = data.map(item => Number(item[column.property]));
@@ -1914,6 +1922,7 @@
 | expand-row-keys | 可以通过该属性设置 Table 目前的展开行，需要设置 row-key 属性才能使用，该属性为展开行的 keys 数组。| Array | — | |
 | default-sort | 默认的排序列的 prop 和顺序。它的`prop`属性指定默认的排序的列，`order`指定默认排序的顺序| Object | `order`: ascending, descending | 如果只指定了`prop`, 没有指定`order`, 则默认顺序是ascending |
 | tooltip-effect | tooltip `effect` 属性 | String | dark/light | | dark |
+| showSummarySelectAll | 是否展示selectAll或者selectCurrent 搭配select-all-full监听事件使用| Boolean | — | false |
 | show-summary | 是否在表尾显示合计行 | Boolean | — | false |
 | show-summary-position-top | 合计是否展示在头部 | Boolean | - | false |
 | sum-text | 合计行第一列的文本 | String | — | 合计 |
@@ -1945,6 +1954,7 @@
 | current-change | 当表格的当前行发生变化的时候会触发该事件，如果要高亮当前行，请打开表格的 highlight-current-row 属性 | currentRow, oldCurrentRow |
 | header-dragend | 当拖动表头改变了列的宽度的时候会触发该事件 | newWidth, oldWidth, column, event |
 | expand-change  | 当用户对某一行展开或者关闭的时候会触发该事件（展开行时，回调的第二个参数为 expandedRows；树形表格时第二参数为 expanded） | row, (expandedRows \| expanded) |
+| select-all-full | 当使用的是全选属性的情况下（select all） 返回true false | Boolen |
 
 ### Table Methods
 | 方法名 | 说明 | 参数 |

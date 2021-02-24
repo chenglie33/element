@@ -112,9 +112,17 @@ Watcher.prototype.mutations = {
 
     this.updateTableScrollY();
   },
-
+  toggleAllSelectionEmitFalse() {
+    this.toggleAllSelectionEmitFalse();
+  },
+  toggleAllSelectionEmitTrue() {
+    this.toggleAllSelectionEmitTrue();
+  },
   toggleAllSelection() {
     this.toggleAllSelection();
+  },
+  toggleFullSelect() {
+    this.toggleFullSelect();
   },
 
   rowSelectedChanged(states, row) {

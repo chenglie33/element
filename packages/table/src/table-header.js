@@ -67,7 +67,7 @@ export default {
   name: 'ElTableHeader',
 
   mixins: [LayoutObserver],
-
+  inject: ['provideSelect'],
   render(h) {
     const originColumns = this.store.states.originColumns;
     const columnRows = convertToRows(originColumns, this.columns);
@@ -109,7 +109,7 @@ export default {
                     key={ column.id }>
                     <div class={ ['cell', column.filteredValue && column.filteredValue.length > 0 ? 'highlight' : '', column.labelClassName] }>
                       {
-                        column.renderHeader
+                        column.renderHeader && (!this.provideSelect.selectCurrent || !this.provideSelect.selectAll)
                           ? column.renderHeader.call(this._renderProxy, h, { column, $index: cellIndex, store: this.store, _self: this.$parent.$vnode.context })
                           : column.label
                       }
