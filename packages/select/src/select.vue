@@ -115,6 +115,7 @@
           ref="scrollbar"
           :class="{ 'is-empty': !allowCreate && query && filteredOptionsCount === 0 }"
           v-show="options.length > 0 && !loading">
+          <li v-if='CanSelectAll' class="el-select-dropdown__item"><el-checkbox :indeterminate='isindeterminate' v-model='selectAllValue' @change='allChange' label='select All' /></li>
           <el-option
             :value="query"
             created
@@ -142,6 +143,7 @@
   import ElOption from './option.vue';
   import ElTag from 'ttelem/packages/tag';
   import ElScrollbar from 'ttelem/packages/scrollbar';
+  import ElCheckbox from 'ttelem/packages/checkbox';
   import debounce from 'throttle-debounce/debounce';
   import Clickoutside from 'ttelem/src/utils/clickoutside';
   import { addResizeListener, removeResizeListener } from 'ttelem/src/utils/resize-event';
@@ -245,7 +247,8 @@
       ElSelectMenu,
       ElOption,
       ElTag,
-      ElScrollbar
+      ElScrollbar,
+      ElCheckbox
     },
 
     directives: { Clickoutside },
@@ -302,6 +305,10 @@
       popperAppendToBody: {
         type: Boolean,
         default: true
+      },
+      CanSelectAll: {
+        type: Boolean,
+        default: false
       }
     },
 
@@ -328,7 +335,10 @@
         currentPlaceholder: '',
         menuVisibleOnFocus: false,
         isOnComposition: false,
-        isSilentBlur: false
+        isSilentBlur: false,
+        selectAllValue: false,
+        valueArr: [],
+        isindeterminate: false
       };
     },
 
@@ -362,6 +372,16 @@
         }
         if (!valueEquals(val, oldVal)) {
           this.dispatch('ElFormItem', 'el.form.change', val);
+        }
+        if (val.length > 0 && val.length < this.valueArr.length) {
+          this.isindeterminate = true;
+        } else {
+          this.isindeterminate = false;
+        }
+        if (val.length < this.valueArr.length) {
+          this.selectAllValue = false;
+        } else {
+          this.selectAllValue = true;
         }
       },
 
@@ -536,7 +556,6 @@
         }
         return newOption;
       },
-
       setSelected() {
         if (!this.multiple) {
           let option = this.getOption(this.value);
@@ -673,7 +692,15 @@
           }
         }, 300);
       },
-
+      allChange(value) {
+        if (value) {
+          this.$emit('input', this.valueArr);
+          this.emitChange(this.valueArr);
+        } else {
+          this.$emit('input', []);
+          this.emitChange([]);
+        }
+      },
       handleOptionSelect(option, byClick) {
         if (this.multiple) {
           const value = (this.value || []).slice();
@@ -685,6 +712,11 @@
           }
           this.$emit('input', value);
           this.emitChange(value);
+          // if (value.length === 0) {
+          //   this.selectAllValue = false;
+          // } else if (value.length < this.valueArr.length) {
+          //   this.selectAllValue = false;
+          // }
           if (option.created) {
             this.query = '';
             this.handleQueryChange('');
@@ -827,7 +859,9 @@
           }
         }
       },
-
+      getValueArr(v) {
+        !this.valueArr.includes(v) && this.valueArr.push(v);
+      },
       getValueKey(item) {
         if (Object.prototype.toString.call(item.value).toLowerCase() !== '[object object]') {
           return item.value;
@@ -853,7 +887,7 @@
       this.debouncedQueryChange = debounce(this.debounce, (e) => {
         this.handleQueryChange(e.target.value);
       });
-
+      this.$on('getValueArr', this.getValueArr);
       this.$on('handleOptionClick', this.handleOptionSelect);
       this.$on('setSelected', this.setSelected);
     },

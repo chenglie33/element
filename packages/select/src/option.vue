@@ -96,7 +96,9 @@
         }
       }
     },
-
+    mounted() {
+      this.dispatch('ElSelect', 'getValueArr', this.value);
+    },
     methods: {
       isEqual(a, b) {
         if (!this.isObject) {
