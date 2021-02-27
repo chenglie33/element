@@ -39,7 +39,6 @@ Watcher.prototype.mutations = {
     } else {
       array.push(column);
     }
-
     if (column.type === 'selection') {
       states.selectable = column.selectable;
       states.reserveSelection = column.reserveSelection;

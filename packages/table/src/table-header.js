@@ -71,6 +71,7 @@ export default {
   render(h) {
     const originColumns = this.store.states.originColumns;
     const columnRows = convertToRows(originColumns, this.columns);
+
     // 是否拥有多级表头
     const isGroup = columnRows.length > 1;
     if (isGroup) this.$parent.isGroup = true;
@@ -97,8 +98,11 @@ export default {
               >
                 {
                   columns.map((column, cellIndex) => (<th
+
                     colspan={ column.colSpan }
                     rowspan={ column.rowSpan }
+                    on-dragover={($event) => $event.preventDefault()}
+                    on-drop={($event) => this.dropFun($event, column)}
                     on-mousemove={ ($event) => this.handleMouseMove($event, column) }
                     on-mouseout={ this.handleMouseOut }
                     on-mousedown={ ($event) => this.handleMouseDown($event, column) }
@@ -107,7 +111,7 @@ export default {
                     style={ this.getHeaderCellStyle(rowIndex, cellIndex, columns, column) }
                     class={ this.getHeaderCellClass(rowIndex, cellIndex, columns, column) }
                     key={ column.id }>
-                    <div class={ ['cell', column.filteredValue && column.filteredValue.length > 0 ? 'highlight' : '', column.labelClassName] }>
+                    <div draggable={column.dragAble} on-dragstart={($event) => this.onDragStartFun($event, column)} class={ ['cell', column.filteredValue && column.filteredValue.length > 0 ? 'highlight' : '', column.labelClassName] }>
                       {
                         column.renderHeader && (!this.provideSelect.selectCurrent || !this.provideSelect.selectAll)
                           ? column.renderHeader.call(this._renderProxy, h, { column, $index: cellIndex, store: this.store, _self: this.$parent.$vnode.context })
@@ -497,6 +501,13 @@ export default {
       states.sortOrder = sortOrder;
 
       this.store.commit('changeSortCondition');
+    },
+    onDragStartFun(event, prop) {
+      event.dataTransfer.setData('prop', prop.prop || prop.property);
+    },
+    dropFun(event, prop) {
+      event.preventDefault();
+      console.log(event.dataTransfer.getData('prop'));
     }
   },
 

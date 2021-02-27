@@ -56,6 +56,10 @@ export default {
       validator(val) {
         return val.every(order => ['ascending', 'descending', null].indexOf(order) > -1);
       }
+    },
+    dragAble: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -195,7 +199,7 @@ export default {
     },
 
     registerNormalWatchers() {
-      const props = ['label', 'property', 'filters', 'filterMultiple', 'sortable', 'index', 'formatter', 'className', 'labelClassName', 'showOverflowTooltip'];
+      const props = ['label', 'property', 'filters', 'filterMultiple', 'sortable', 'index', 'formatter', 'className', 'labelClassName', 'showOverflowTooltip', 'drapAble'];
       // 一些属性具有别名
       const aliases = {
         prop: 'property',
@@ -278,7 +282,7 @@ export default {
       index: this.index
     };
 
-    const basicProps = ['columnKey', 'label', 'className', 'labelClassName', 'type', 'renderHeader', 'formatter', 'fixed', 'resizable'];
+    const basicProps = ['columnKey', 'label', 'className', 'labelClassName', 'type', 'renderHeader', 'formatter', 'fixed', 'resizable', 'dragAble'];
     const sortProps = ['sortMethod', 'sortBy', 'sortOrders'];
     const selectProps = ['selectable', 'reserveSelection'];
     const filterProps = ['filterMethod', 'filters', 'filterMultiple', 'filterOpened', 'filteredValue', 'filterPlacement'];
