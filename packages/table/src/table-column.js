@@ -59,7 +59,7 @@ export default {
     },
     dragAble: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
 

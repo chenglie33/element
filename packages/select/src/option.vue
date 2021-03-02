@@ -156,6 +156,7 @@
 
     beforeDestroy() {
       const { selected, multiple } = this.select;
+      this.dispatch('ElSelect', 'deleteValueArr', this.value);
       let selectedOptions = multiple ? selected : [selected];
       let index = this.select.cachedOptions.indexOf(this);
       let selectedIndex = selectedOptions.indexOf(this);

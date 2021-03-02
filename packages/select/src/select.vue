@@ -307,8 +307,8 @@
         default: true
       },
       CanSelectAll: {
-        type: Boolean,
-        default: false
+        type: Number,
+        default: 0
       }
     },
 
@@ -352,7 +352,20 @@
       propPlaceholder(val) {
         this.cachedPlaceHolder = this.currentPlaceholder = val;
       },
-
+      CanSelectAll(val) {
+        if (val) {
+          if (this.value.length > 0 && this.value.length < val) {
+            this.isindeterminate = true;
+          } else {
+            this.isindeterminate = false;
+          }
+          if (this.value.length < val) {
+            this.selectAllValue = false;
+          } else {
+            this.selectAllValue = true;
+          }
+        }
+      },
       value(val, oldVal) {
         if (this.multiple) {
           this.resetInputHeight();
@@ -373,18 +386,19 @@
         if (!valueEquals(val, oldVal)) {
           this.dispatch('ElFormItem', 'el.form.change', val);
         }
-        if (val.length > 0 && val.length < this.valueArr.length) {
-          this.isindeterminate = true;
-        } else {
-          this.isindeterminate = false;
-        }
-        if (val.length < this.valueArr.length) {
-          this.selectAllValue = false;
-        } else {
-          this.selectAllValue = true;
+        if (this.CanSelectAll) {
+          if (val.length > 0 && val.length < this.CanSelectAll) {
+            this.isindeterminate = true;
+          } else {
+            this.isindeterminate = false;
+          }
+          if (val.length < this.CanSelectAll) {
+            this.selectAllValue = false;
+          } else {
+            this.selectAllValue = true;
+          }
         }
       },
-
       visible(val) {
         if (!val) {
           this.broadcast('ElSelectDropdown', 'destroyPopper');
@@ -712,11 +726,6 @@
           }
           this.$emit('input', value);
           this.emitChange(value);
-          // if (value.length === 0) {
-          //   this.selectAllValue = false;
-          // } else if (value.length < this.valueArr.length) {
-          //   this.selectAllValue = false;
-          // }
           if (option.created) {
             this.query = '';
             this.handleQueryChange('');
@@ -859,6 +868,11 @@
           }
         }
       },
+      deleteValueArr(v) {
+        if (this.valueArr.indexOf(v) !== -1) {
+          this.valueArr.splice(this.valueArr.indexOf(v), 1);
+        }
+      },
       getValueArr(v) {
         !this.valueArr.includes(v) && this.valueArr.push(v);
       },
@@ -887,6 +901,7 @@
       this.debouncedQueryChange = debounce(this.debounce, (e) => {
         this.handleQueryChange(e.target.value);
       });
+      this.$on('deleteValueArr', this.deleteValueArr);
       this.$on('getValueArr', this.getValueArr);
       this.$on('handleOptionClick', this.handleOptionSelect);
       this.$on('setSelected', this.setSelected);

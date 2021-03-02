@@ -188,9 +188,9 @@
 :::demo 为`el-select`设置`multiple`属性即可启用多选，此时`v-model`的值为当前选中值所组成的数组。默认情况下选中值会以 Tag 的形式展现，你也可以设置`collapse-tags`属性将它们合并为一段文字。
 ```html
 <template>
-  <el-select v-model="value1" multiple :CanSelectAll='true' placeholder="请选择">
+  <el-select v-model="value1" multiple :CanSelectAll='options.length' placeholder="请选择">
     <el-option
-      v-for="item in options"
+      v-for="item in optionAsyn"
       :key="item.value"
       :label="item.label"
       :value="item.value">
@@ -237,9 +237,30 @@
           value: '选项5',
           label: '北京烤鸭'
         }],
+        optionAsyn:[],
         value1: [],
         value2: []
       }
+    },
+    mounted() {
+      setTimeout(()=>{
+        this.optionAsyn = [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }]
+      },1000)
     }
   }
 </script>
@@ -528,7 +549,7 @@
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | value / v-model | 绑定值 | boolean / string / number | — | — |
-| CanSelectAll | 是否包含全选 全选情况下使用pacOption | boolean | - | false |
+| CanSelectAll | 是否包含全选 全选情况下使用pacOption 值为选项的长度 | number | - | 0 |
 | multiple | 是否多选 | boolean | — | false |
 | disabled | 是否禁用 | boolean | — | false |
 | value-key | 作为 value 唯一标识的键名，绑定值为对象类型时必填 | string | — | value |
